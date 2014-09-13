@@ -20,9 +20,7 @@ namespace TKPlatformer
         public static string WINDOW_NAME = "OpenTK Test";
         public static GameWindowFlags WINDOW_FLAGS = GameWindowFlags.Default;
 
-        public OpenTK.GameWindow window;
-        Texture2D Texture1, Texture2;
-        float rotation = 0;
+        public GameWindow window;
         public View view;
         public QFont font;
 

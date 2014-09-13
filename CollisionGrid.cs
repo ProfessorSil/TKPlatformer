@@ -14,9 +14,9 @@ namespace TKPlatformer
     {
         public static enum CollisionType
         {
-            Solid,
-            Empty,
-            Platform
+            Solid = 1, //The enum values directly correspond to the .lvl files values
+            Empty = 0,
+            Platform = 2
         }
 
         private CollisionType[,] values;
