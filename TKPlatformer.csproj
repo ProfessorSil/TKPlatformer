@@ -52,11 +52,13 @@
     <Compile Include="Calc.cs" />
     <Compile Include="CollisionGrid.cs" />
     <Compile Include="ContentPipe.cs" />
+    <Compile Include="RectF.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="Map.cs" />
     <Compile Include="My.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SolidObject.cs" />
     <Compile Include="Spritebatch.cs" />
     <Compile Include="Texture2D.cs" />
     <Compile Include="View.cs" />
@@ -68,7 +70,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Content\Levels\Level1.lvl">
+    <None Include="Content\Levels\DevRoom.lvl">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

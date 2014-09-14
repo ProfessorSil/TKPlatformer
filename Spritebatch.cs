@@ -136,6 +136,10 @@ namespace TKPlatformer
             GL.End();
         }
 
+        public static void DrawRectangle(RectangleF rec, Color color)
+        {
+            DrawRectangle(new Vector2(rec.X, rec.Y), new Vector2(rec.Width, rec.Height), color);
+        }
         public static void DrawRectangle(Vector2 position, Vector2 size, Color color)
         {
             DrawRectangle(position.X, position.Y, size.X, size.Y, color, 0, Vector2.Zero, 0);

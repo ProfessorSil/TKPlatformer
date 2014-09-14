@@ -12,7 +12,7 @@ namespace TKPlatformer
 {
     class CollisionGrid
     {
-        public static enum CollisionType
+        public enum CollisionType
         {
             Solid = 1, //The enum values directly correspond to the .lvl files values
             Empty = 0,
@@ -58,8 +58,8 @@ namespace TKPlatformer
             }
             else
             {
-                Console.WriteLine("Attempted to access collisionType outside of the grid at " + x.ToString() + "," + y.ToString() + ".");
-                Console.WriteLine("Returning CollisionType.Solid");
+                //Console.WriteLine("Attempted to access collisionType outside of the grid at " + x.ToString() + "," + y.ToString() + ".");
+                //Console.WriteLine("Returning CollisionType.Solid");
                 return CollisionType.Solid;
             }
         }

@@ -19,6 +19,8 @@ namespace TKPlatformer
         public Dictionary<string, string> properties;
         private string filePath;
 
+        public float GridSize = 32;
+
         public int Width
         {
             get { return colGrid.Width; }
@@ -32,6 +34,21 @@ namespace TKPlatformer
         {
             colGrid = new CollisionGrid(width, height);
 
+        }
+        /// <summary>
+        /// Loads all values from a .lvl file
+        /// </summary>
+        /// <param name="filename"> just filename, no folders, no filetype</param>
+        /// <param name="baseFolder">the folder that we look in to find the file</param>
+        /// <returns>whether it was successful</returns>
+        public Map(string fileName, string baseFolder = "Content\\Levels\\")
+        {
+            LoadFromFile(fileName, baseFolder);
+        }
+
+        public RectangleF GetColRec(int x, int y)
+        {
+            return new RectangleF(x * GridSize, y * GridSize, GridSize, GridSize);
         }
 
         /// <summary>
@@ -90,11 +107,13 @@ namespace TKPlatformer
                         for (int x = 0; x < w; x++)
                         {
                             int nextIndex = line.IndexOf('♦', lastIndex);
-                            if (nextIndex == 0 || nextIndex == lastIndex)
+                            if (nextIndex == -1 || nextIndex == lastIndex)
                             {
                                 //Either the line was "~" indicator or not long enough or no text inbetween two ♦ seperators
                                 Console.WriteLine("Could not find specified type at " + x.ToString() + "," + y.ToString());
                                 colGrid.SetValue(x, y, CollisionGrid.CollisionType.Empty);
+                                if (nextIndex != -1)
+                                    lastIndex = nextIndex + 1;
                             }
                             else
                             {
@@ -108,8 +127,11 @@ namespace TKPlatformer
                                 {
                                     colGrid.SetValue(x, y, (CollisionGrid.CollisionType)val);
                                 }
+
+                                lastIndex = nextIndex + 1;
                             }
                         }
+
                         if (line == "~")
                         {
                             Console.WriteLine("Line " + y.ToString() + " of collision values does not exist. Expected to be " + h + " cells tall.");
@@ -118,6 +140,7 @@ namespace TKPlatformer
                         else
                         {
                             line = reader.ReadLine();
+                            lastIndex = 0;
                         }
                     }
                 }
@@ -140,7 +163,21 @@ namespace TKPlatformer
                         int i = line.IndexOf(':');
                         string id = line.Substring(0, i);
                         string value = line.Substring(i + 1, line.Length - i - 1);
+
+                        if (id.ToLower() == "gridsize")
+                        {
+                            int size;
+                            if (int.TryParse(value, out size))
+                            {
+                                GridSize = size;
+                                line = reader.ReadLine();
+                                continue;
+                            }
+                        }
+
                         properties.Add(id, value);
+
+                        line = reader.ReadLine();
                     }
                 }
                 

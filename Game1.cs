@@ -23,6 +23,8 @@ namespace TKPlatformer
         public GameWindow window;
         public View view;
         public QFont font;
+        public Map map;
+        public SolidObject obj;
 
         /// <summary>
         /// This automatically binds Game1's function to window's events
@@ -44,7 +46,12 @@ namespace TKPlatformer
             Spritebatch.Initialize(window);
 
             view = new View(window, Vector2.Zero, 10.0, 1, 0.0);
+            view.SetPosition(view.SizeWorld / 2f);
             view.enableRounding = false;
+
+            map = new Map("DevRoom");
+
+            obj = new SolidObject("PlayerTest", new Vector2(32, 32), new Vector2(24, 31), new Vector2(0, 0.5f));
         }
 
         public void Load(object sender, EventArgs e)
@@ -68,7 +75,28 @@ namespace TKPlatformer
                 window.Exit();
             }
 
+            obj.Update(ref map);
 
+            #region Player Movement
+            {
+                float speed = 2;
+                float jumpSpeed = 10;
+                if (obj.IsOnGround)
+                    obj.velocity.X = 0;
+                if (My.KeyDown(Key.Left) && obj.IsOnGround)
+                {
+                    obj.velocity.X += -speed;
+                }
+                if (My.KeyDown(Key.Right) && obj.IsOnGround)
+                {
+                    obj.velocity.X += speed;
+                } 
+                if (My.KeyPress(Key.Space) && obj.IsOnGround)
+                {
+                    obj.velocity.Y = -jumpSpeed;
+                }
+            }
+            #endregion
 
             #region View Movement
             view.BasicMovement(5.0f, true, false);
@@ -99,22 +127,45 @@ namespace TKPlatformer
 
             Spritebatch.Begin(4.0f, view);
 
-            
+            for (int x = 0; x < map.Width; x++)
+            {
+                for (int y = 0; y < map.Height; y++)
+                {
+                    Color col = Color.Black;
+                    if (map.colGrid.GetValue(x, y) == CollisionGrid.CollisionType.Solid)
+                    {
+                        col = Color.Red;
+                    }
+                    else if (map.colGrid.GetValue(x, y) == CollisionGrid.CollisionType.Platform)
+                    {
+                        col = Color.Blue;
+                    }
+                    else if (map.colGrid.GetValue(x, y) == CollisionGrid.CollisionType.Empty)
+                    {
+                        col = Color.Gray;
+                    }
+
+                    Spritebatch.DrawRectangle(new Vector2(x * 32, y * 32), new Vector2(32, 32), col);
+
+                }
+            }
+            obj.Draw();
 
             Spritebatch.End();
 
             #region Debug Text
             QFont.Begin();
             QFontRenderOptions op = new QFontRenderOptions();
-            op.Colour = Color.Red;
+            op.Colour = Color.White;
             font.PushOptions(op);
             font.Print(String.Format(
-                "x {0}\ny {1}\nz {2}\nr {3}", 
-                Math.Round(view.position.X, 1),
-                Math.Round(view.position.Y, 1),
-                Math.Round(view.zoom, 4),
-                Math.Round(view.rotation, 0)),
-                100f, QFontAlignment.Left, new Vector2(0, 0));
+                "vx={0} vy={1}\ng {2}\nl {3}\npx={4} py={5}",
+                Math.Round(obj.velocity.X, 1),
+                Math.Round(obj.velocity.Y, 1),
+                obj.IsOnGround,
+                obj.ColLeft,
+                Math.Round(obj.position.X, 1),
+                Math.Round(obj.position.Y, 1)));
             QFont.End();
             #endregion
 
