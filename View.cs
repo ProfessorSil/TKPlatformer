@@ -507,7 +507,6 @@ namespace TKPlatformer
             float aspectRatio = (float)window.Height / (float)window.Width;
             float aspectRatio2 = (float)window.Width / (float)window.Height;
 
-            //TODO: Aspect Ratio still skews pictures!
             if (enableZoom)
                 world = Matrix4.Mult(world, Matrix4.CreateScale((float)zoom, (float)zoom, 0.0f));
 

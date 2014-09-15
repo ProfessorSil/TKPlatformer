@@ -52,7 +52,6 @@
     <Compile Include="Calc.cs" />
     <Compile Include="CollisionGrid.cs" />
     <Compile Include="ContentPipe.cs" />
-    <Compile Include="RectF.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="Map.cs" />
     <Compile Include="My.cs" />
